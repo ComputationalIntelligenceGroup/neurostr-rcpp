@@ -1,0 +1,3 @@
+PKG_LIBS=lib/libneurostr.a
+PKG_CPPFLAGS= -I /usr/local/include/neurostr -I /usr/local/include/eigen3 -I /usr/local/include/spdlog -I /usr/local/include/rapidjson
+PKG_CXXFLAGS=-std=c++14

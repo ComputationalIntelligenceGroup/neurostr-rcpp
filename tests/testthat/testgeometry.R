@@ -1,0 +1,50 @@
+test_that("gets coordinates", {
+  point <- c(1,2,3);
+  expect_equal(geometry$get(point,0),1)
+  expect_equal(geometry$get(point,1),2)
+  expect_equal(geometry$get(point,2),3)
+})
+
+test_that("gets x coordinate", {
+  point <- c(1,2,3);
+  expect_equal(geometry$getx(point),1)
+})
+
+test_that("gets y coordinate", {
+  point <- c(1,2,3);
+  expect_equal(geometry$gety(point),2)
+})
+
+test_that("gets z coordinate", {
+  point <- c(1,2,3);
+  expect_equal(geometry$getz(point),3)
+})
+
+test_that("intersecting boxes intersects", {
+  box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
+  box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)
+  expect_true(geometry$box_box_intersection(box1,box2))
+})
+
+test_that("same boxes intersects", {
+  box <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
+  expect_true(geometry$box_box_intersection(box,box))
+})
+
+test_that("face limit boxes intersects", {
+  box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
+  box2 <- matrix(c(1,0,0,1.5,1.5,1.5),2,3, TRUE)
+  expect_true(geometry$box_box_intersection(box1,box2))
+})
+
+test_that("corner limit boxes intersects", {
+  box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
+  box2 <- matrix(c(1,1,1,1.5,1.5,1.5),2,3, TRUE)
+  expect_true(geometry$box_box_intersection(box1,box2))
+})
+
+test_that("non intersecting boxes not intersects", {
+  box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
+  box2 <- matrix(c(1.1,1.1,1.1,1.5,1.5,1.5),2,3, TRUE)
+  expect_false(geometry$box_box_intersection(box1,box2))
+})

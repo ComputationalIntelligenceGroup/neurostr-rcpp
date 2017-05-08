@@ -85,8 +85,8 @@ template <> SEXP wrap(const neurostr::geometry::segment_type &s){
 template <> neurostr::geometry::triangle_type as(SEXP triangle){
   Rcpp::NumericMatrix nm(triangle);
   neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(0)));
-  neurostr::geometry::point_type q= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(1)));
-  neurostr::geometry::point_type r= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(2)));
+  neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(1)));
+  neurostr::geometry::point_type r = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(2)));
   neurostr::geometry::triangle_type t = {p,q,r};
   return t;
 }

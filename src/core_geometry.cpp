@@ -25,6 +25,7 @@ template <> SEXP wrap(const neurostr::geometry::triangle_type &t);
 }
 
 #include <Rcpp.h>
+#include <iostream>
 
 namespace Rcpp {
 
@@ -79,8 +80,31 @@ template <> SEXP wrap(const neurostr::geometry::segment_type &s){
   return Rcpp::wrap(nm);
 }
 
+// triangle_type
+template <> neurostr::geometry::triangle_type as(SEXP triangle){
+  Rcpp::NumericMatrix nm(triangle);
+  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(0,_)));
+  neurostr::geometry::point_type q= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(1,_)));
+  neurostr::geometry::point_type r= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(2,_)));
+  neurostr::geometry::triangle_type t = {p,q,r};
+  return t;
 }
-  
+template <> SEXP wrap(const neurostr::geometry::triangle_type &t){
+  neurostr::geometry::point_type p = std::get<0>(t);
+  neurostr::geometry::point_type q = std::get<1>(t);
+  neurostr::geometry::point_type r = std::get<2>(t);
+  Rcpp::NumericVector nv_p(Rcpp::wrap(p));
+  Rcpp::NumericVector nv_q(Rcpp::wrap(q));
+  Rcpp::NumericVector nv_r(Rcpp::wrap(r));
+  Rcpp::NumericMatrix nm(3,3);
+  nm(0,_) = nv_p;
+  nm(1,_) = nv_q;
+  nm(2,_) = nv_r;
+  return Rcpp::wrap(nm);
+}
+
+}
+
 using namespace Rcpp;
 
 Rcpp::List segment_box_intersection(const NumericMatrix& box, const NumericMatrix& segment){

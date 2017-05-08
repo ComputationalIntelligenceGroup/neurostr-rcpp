@@ -76,8 +76,8 @@ template <> SEXP wrap(const neurostr::geometry::segment_type &s){
   Rcpp::NumericVector nv_min(Rcpp::wrap(first));
   Rcpp::NumericVector nv_max(Rcpp::wrap(second));
   Rcpp::NumericMatrix nm(2,3);
-  nm(0,_) = nv_min;
-  nm(1,_) = nv_max;
+  nm.row(0) = nv_min;
+  nm.row(1) = nv_max;
   return Rcpp::wrap(nm);
 }
 
@@ -119,13 +119,13 @@ template <> SEXP wrap(const neurostr::geometry::planar_point &p){
 
 using namespace Rcpp;
 
-Rcpp::List segment_box_intersection(const NumericMatrix& box, const NumericMatrix& segment){
+List segment_box_intersection(const NumericMatrix& box, const NumericMatrix& segment){
   neurostr::geometry::box_type neurostr_box = ::as<neurostr::geometry::box_type>(::wrap(box));
   neurostr::geometry::segment_type neurostr_segment = ::as<neurostr::geometry::segment_type>(::wrap(segment));
   neurostr::geometry::point_type neurostr_point;
   bool intersects = neurostr::geometry::segment_box_intersection(neurostr_box, neurostr_segment, neurostr_point);
   NumericVector nv_i(::wrap(neurostr_point));
-  return Rcpp::List::create(intersects, nv_i);
+  return List::create(intersects, nv_i);
 }
 
 RCPP_MODULE(core_geometry){

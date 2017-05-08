@@ -54,6 +54,13 @@ test_that("vector from to", {
   expect_equal(0,geometry$distance(q,geometry$vector_from_to(p,p)))
 })
 
+test_that("traslate", {
+  p <- c(0,0,0)
+  t <- c(1,0,0)
+  
+  expect_equal(0,geometry$distance(geometry$traslate(p,t),t))
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

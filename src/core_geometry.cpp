@@ -128,6 +128,13 @@ List segment_box_intersection(const NumericMatrix& box, const NumericMatrix& seg
   return List::create(intersects, nv_i);
 }
 
+NumericVector traslate(const NumericVector& p, const NumericVector& v){
+  neurostr::geometry::point_type point = ::as<neurostr::geometry::point_type>(::wrap(p));
+  neurostr::geometry::point_type vector = ::as<neurostr::geometry::point_type>(::wrap(v));
+  neurostr::geometry::traslate(point,vector);
+  return NumericVector(::wrap(point));
+}
+
 RCPP_MODULE(core_geometry){
   
   function( "get", &neurostr::geometry::get);
@@ -137,6 +144,7 @@ RCPP_MODULE(core_geometry){
   function( "planar_projection", &neurostr::geometry::planar_projection);
   function( "distance", &neurostr::geometry::distance);
   function( "vector_from_to", &neurostr::geometry::vectorFromTo);
+  function( "traslate", &traslate);
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);

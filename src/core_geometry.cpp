@@ -22,6 +22,10 @@ template <> SEXP wrap(const neurostr::geometry::segment_type &s);
 template <> neurostr::geometry::triangle_type as(SEXP triangle);
 template <> SEXP wrap(const neurostr::geometry::triangle_type &t);
 
+// planar_point wrapping
+template <> neurostr::geometry::planar_point as(SEXP point);
+template <> SEXP wrap(const neurostr::geometry::planar_point &p);
+
 }
 
 #include <Rcpp.h>
@@ -34,7 +38,6 @@ template <> neurostr::geometry::point_type as(SEXP point){
   Rcpp::NumericVector nv(point);
   return neurostr::geometry::point_type(nv[0], nv[1], nv[2]);
 }
-
 template <> SEXP wrap(const neurostr::geometry::point_type &p){
   float x = neurostr::geometry::getx(p);
   float y = neurostr::geometry::gety(p);
@@ -49,7 +52,6 @@ template <> neurostr::geometry::box_type as(SEXP box){
   neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(1,_)));
   return neurostr::geometry::box_type(p,q);
 }
-
 template <> SEXP wrap(const neurostr::geometry::box_type &b){
   neurostr::geometry::point_type min_corner = b.min_corner();
   neurostr::geometry::point_type max_corner = b.max_corner();
@@ -68,7 +70,6 @@ template <> neurostr::geometry::segment_type as(SEXP segment){
   neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(1,_)));
   return neurostr::geometry::segment_type(p,q);
 }
-
 template <> SEXP wrap(const neurostr::geometry::segment_type &s){
   neurostr::geometry::point_type first = s.first;
   neurostr::geometry::point_type second = s.second;
@@ -101,6 +102,17 @@ template <> SEXP wrap(const neurostr::geometry::triangle_type &t){
   nm(1,_) = nv_q;
   nm(2,_) = nv_r;
   return Rcpp::wrap(nm);
+}
+
+// planar_point
+template <> neurostr::geometry::planar_point as(SEXP point){
+  Rcpp::NumericVector nv(point);
+  return neurostr::geometry::planar_point(nv[0], nv[1]);
+}
+template <> SEXP wrap(const neurostr::geometry::planar_point &p){
+  float x = neurostr::geometry::get<0>(p);
+  float y = neurostr::geometry::get<1>(p);
+  return Rcpp::wrap(Rcpp::NumericVector::create(x,y));
 }
 
 }

@@ -48,8 +48,8 @@ template <> SEXP wrap(const neurostr::geometry::point_type &p){
 // box_type
 template <> neurostr::geometry::box_type as(SEXP box){
   Rcpp::NumericMatrix nm(box);
-  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(0,_)));
-  neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(1,_)));
+  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(0)));
+  neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(1)));
   return neurostr::geometry::box_type(p,q);
 }
 template <> SEXP wrap(const neurostr::geometry::box_type &b){
@@ -58,16 +58,16 @@ template <> SEXP wrap(const neurostr::geometry::box_type &b){
   Rcpp::NumericVector nv_min(Rcpp::wrap(min_corner));
   Rcpp::NumericVector nv_max(Rcpp::wrap(max_corner));
   Rcpp::NumericMatrix nm(2,3);
-  nm(0,_) = nv_min;
-  nm(1,_) = nv_max;
+  nm.row(0) = nv_min;
+  nm.row(1) = nv_max;
   return Rcpp::wrap(nm);
 }
 
 // segment_type
 template <> neurostr::geometry::segment_type as(SEXP segment){
   Rcpp::NumericMatrix nm(segment);
-  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(0,_)));
-  neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(1,_)));
+  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(0)));
+  neurostr::geometry::point_type q = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(1)));
   return neurostr::geometry::segment_type(p,q);
 }
 template <> SEXP wrap(const neurostr::geometry::segment_type &s){
@@ -84,9 +84,9 @@ template <> SEXP wrap(const neurostr::geometry::segment_type &s){
 // triangle_type
 template <> neurostr::geometry::triangle_type as(SEXP triangle){
   Rcpp::NumericMatrix nm(triangle);
-  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(0,_)));
-  neurostr::geometry::point_type q= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(1,_)));
-  neurostr::geometry::point_type r= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm(2,_)));
+  neurostr::geometry::point_type p = Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(0)));
+  neurostr::geometry::point_type q= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(1)));
+  neurostr::geometry::point_type r= Rcpp::as<neurostr::geometry::point_type>(Rcpp::wrap(nm.row(2)));
   neurostr::geometry::triangle_type t = {p,q,r};
   return t;
 }
@@ -98,9 +98,9 @@ template <> SEXP wrap(const neurostr::geometry::triangle_type &t){
   Rcpp::NumericVector nv_q(Rcpp::wrap(q));
   Rcpp::NumericVector nv_r(Rcpp::wrap(r));
   Rcpp::NumericMatrix nm(3,3);
-  nm(0,_) = nv_p;
-  nm(1,_) = nv_q;
-  nm(2,_) = nv_r;
+  nm.row(0) = nv_p;
+  nm.row(1) = nv_q;
+  nm.row(2) = nv_r;
   return Rcpp::wrap(nm);
 }
 
@@ -134,6 +134,7 @@ RCPP_MODULE(core_geometry){
   function( "getx", &neurostr::geometry::getx);
   function( "gety", &neurostr::geometry::gety);
   function( "getz", &neurostr::geometry::getz);
+  function( "planar_projection", &neurostr::geometry::planar_projection);
   function( "distance", &neurostr::geometry::distance);
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);

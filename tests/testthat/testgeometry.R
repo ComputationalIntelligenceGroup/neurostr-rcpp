@@ -1,23 +1,36 @@
 test_that("gets coordinates", {
-  point <- c(1,2,3);
+  point <- c(1,2,3)
   expect_equal(geometry$get(point,0),1)
   expect_equal(geometry$get(point,1),2)
   expect_equal(geometry$get(point,2),3)
 })
 
 test_that("gets x coordinate", {
-  point <- c(1,2,3);
+  point <- c(1,2,3)
   expect_equal(geometry$getx(point),1)
 })
 
 test_that("gets y coordinate", {
-  point <- c(1,2,3);
+  point <- c(1,2,3)
   expect_equal(geometry$gety(point),2)
 })
 
 test_that("gets z coordinate", {
-  point <- c(1,2,3);
+  point <- c(1,2,3)
   expect_equal(geometry$getz(point),3)
+})
+
+test_that("planar projection", {
+  point <- c(1,2,3)
+  p0 <- geometry$planar_projection(point,0)
+  expect_equal(2,geometry$get(p0,0))
+  expect_equal(3,geometry$get(p0,1))
+  p1 <- geometry$planar_projection(point,1)
+  expect_equal(1,geometry$get(p1,0))
+  expect_equal(3,geometry$get(p1,1))
+  p2 <- geometry$planar_projection(point,2)
+  expect_equal(1,geometry$get(p2,0))
+  expect_equal(2,geometry$get(p2,1))
 })
 
 test_that("intersecting boxes intersects", {

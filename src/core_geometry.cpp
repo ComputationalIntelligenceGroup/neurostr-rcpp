@@ -136,6 +136,7 @@ RCPP_MODULE(core_geometry){
   function( "getz", &neurostr::geometry::getz);
   function( "planar_projection", &neurostr::geometry::planar_projection);
   function( "distance", &neurostr::geometry::distance);
+  function( "vector_from_to", &neurostr::geometry::vectorFromTo);
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);

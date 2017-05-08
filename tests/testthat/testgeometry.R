@@ -44,6 +44,16 @@ test_that("distance", {
   expect_true(abs(sqrt(3) - geometry$distance(q,r)) < 1e-6)
 })
 
+test_that("vector from to", {
+  p <- c(1,0,0)
+  q <- c(0,0,0)
+  r <- c(1,1,1)
+  
+  expect_equal(0,geometry$distance(r,geometry$vector_from_to(q,r)))
+  expect_equal(0,geometry$distance(c(0,1,1),geometry$vector_from_to(p,r)))
+  expect_equal(0,geometry$distance(q,geometry$vector_from_to(p,p)))
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

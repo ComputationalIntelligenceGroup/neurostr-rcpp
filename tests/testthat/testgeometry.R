@@ -33,6 +33,17 @@ test_that("planar projection", {
   expect_equal(2,geometry$get(p2,1))
 })
 
+test_that("distance", {
+  p <- c(1,0,0)
+  q <- c(0,0,0)
+  r <- c(1,1,1)
+  
+  expect_equal(1,geometry$distance(p,q))
+  expect_equal(geometry$distance(q,p),geometry$distance(p,q))
+  expect_equal(0,geometry$distance(p,p))
+  expect_true(abs(sqrt(3) - geometry$distance(q,r)) < 1e-6)
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

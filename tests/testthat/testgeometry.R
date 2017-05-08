@@ -61,6 +61,28 @@ test_that("traslate", {
   expect_equal(0,geometry$distance(geometry$traslate(p,t),t))
 })
 
+test_that("scale", {
+  p <- c(1,0,0)
+  q <- c(1,0,1)
+  r <- c(0,0,0)
+  expect_true(abs(0 - geometry$distance(geometry$scale(p,0.5,r),c(0.5,0,0))) < 1e-6)
+  expect_true(abs(0 - geometry$distance(geometry$scale(q,0.5,r),c(0.5,0,0.5))) < 1e-6)
+})
+
+test_that("scale zero", {
+  p <- c(1,0,0)
+  q <- c(1,0,1)
+  r <- c(1,3,2)
+  expect_true(abs(0 - geometry$distance(geometry$scale(p,0.0,r),r)) < 1e-6)
+  expect_true(abs(0 - geometry$distance(geometry$scale(q,0.0,r),r)) < 1e-6)
+})
+
+test_that("scale axis", {
+  p <- c(1,1,1)
+  #expect_true(abs(0 - geometry$distance(geometry$scale(p,0.3,0.5,0.7),c(0.3,0.5,0.7))) < 1e-6)
+  expect_equal(0,geometry$distance(geometry$scale(p,0.3,0.5,0.7),c(0.3,0.5,0.7)))
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

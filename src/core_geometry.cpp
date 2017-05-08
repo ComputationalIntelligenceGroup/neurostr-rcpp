@@ -128,11 +128,42 @@ List segment_box_intersection(const NumericMatrix& box, const NumericMatrix& seg
   return List::create(intersects, nv_i);
 }
 
-NumericVector traslate(const NumericVector& p, const NumericVector& v){
+NumericVector traslate(NumericVector& p, const NumericVector& v){
   neurostr::geometry::point_type point = ::as<neurostr::geometry::point_type>(::wrap(p));
   neurostr::geometry::point_type vector = ::as<neurostr::geometry::point_type>(::wrap(v));
   neurostr::geometry::traslate(point,vector);
   return NumericVector(::wrap(point));
+}
+
+NumericVector scale_1(NumericVector& p, float scale, const NumericVector& ref){
+  neurostr::geometry::point_type point = ::as<neurostr::geometry::point_type>(::wrap(p));
+  neurostr::geometry::point_type reference = ::as<neurostr::geometry::point_type>(::wrap(ref));
+  neurostr::geometry::scale(point,scale,reference);
+  return NumericVector(::wrap(point));
+}
+
+NumericVector scale_2(NumericVector& p, float rx, float ry, float rz){
+  neurostr::geometry::point_type point = ::as<neurostr::geometry::point_type>(::wrap(p));
+  neurostr::geometry::scale(point,rx,ry,rz);
+  return NumericVector(::wrap(point));
+}
+
+NumericVector scale_3(NumericVector& p, float scale){
+  neurostr::geometry::point_type point = ::as<neurostr::geometry::point_type>(::wrap(p));
+  neurostr::geometry::scale(point,scale);
+  return NumericVector(::wrap(point));
+}
+
+NumericVector scale(NumericVector& p, float arg2, SEXP arg3, SEXP arg4){
+  if(TYPEOF(arg4) != NILSXP){
+    return scale_2(p, arg2, ::as<float>(arg3), ::as<float>(arg4));
+  }else{
+    if(TYPEOF(arg3) == NILSXP){
+      return scale_3(p, arg2);
+    }else{
+      return scale_1(p, arg2, NumericVector(arg3));
+    }
+  }
 }
 
 RCPP_MODULE(core_geometry){
@@ -145,6 +176,7 @@ RCPP_MODULE(core_geometry){
   function( "distance", &neurostr::geometry::distance);
   function( "vector_from_to", &neurostr::geometry::vectorFromTo);
   function( "traslate", &traslate);
+  function( "scale", &scale, List::create( _["p"], _["arg2"], _["arg3"] = R_NilValue, _["arg4"] = R_NilValue));
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);

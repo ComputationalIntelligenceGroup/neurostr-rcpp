@@ -108,6 +108,30 @@ test_that("euclidean norm", {
   expect_true(abs(sqrt(3) - geometry$norm(q)) < 1e-6)
 })
 
+test_that("equality", {
+  p <- c(0,0,0)
+  q <- c(0,0,0)
+  expect_true(geometry$equal(p,p))
+  expect_true(geometry$equal(p,q))
+  
+  r <- c(0,0)
+  s <- c(0,0)
+  expect_true(geometry$equal(r,r))
+  expect_true(geometry$equal(r,s))
+})
+
+test_that("inequality", {
+  p <- c(0,0,0)
+  q <- c(1,1,1)
+  r <- c(1e-6,0,0)
+  expect_false(geometry$equal(p,q))
+  expect_false(geometry$equal(p,r))
+  
+  s <- c(0,0)
+  t <- c(1,1)
+  expect_false(geometry$equal(s,t))
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

@@ -166,6 +166,13 @@ NumericVector scale(NumericVector& p, float arg2, SEXP arg3, SEXP arg4){
   }
 }
 
+bool equal(NumericVector& a, NumericVector& b){
+  if(a.size() == 2){
+    return neurostr::geometry::equal(::as<neurostr::geometry::planar_point>(::wrap(a)), ::as<neurostr::geometry::planar_point>(::wrap(b)));
+  }
+  return neurostr::geometry::equal(::as<neurostr::geometry::point_type>(::wrap(a)), ::as<neurostr::geometry::point_type>(::wrap(b)));
+}
+
 RCPP_MODULE(core_geometry){
   
   function( "get", &neurostr::geometry::get);
@@ -179,6 +186,7 @@ RCPP_MODULE(core_geometry){
   function( "scale", &scale, List::create( _["p"], _["arg2"], _["arg3"] = R_NilValue, _["arg4"] = R_NilValue));
   function( "cross_product", &neurostr::geometry::cross_product);
   function( "norm", &neurostr::geometry::norm);
+  function( "equal", &equal);
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);

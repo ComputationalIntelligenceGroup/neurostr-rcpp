@@ -177,6 +177,7 @@ RCPP_MODULE(core_geometry){
   function( "vector_from_to", &neurostr::geometry::vectorFromTo);
   function( "traslate", &traslate);
   function( "scale", &scale, List::create( _["p"], _["arg2"], _["arg3"] = R_NilValue, _["arg4"] = R_NilValue));
+  function( "cross_product", &neurostr::geometry::cross_product);
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);

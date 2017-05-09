@@ -83,6 +83,24 @@ test_that("scale axis", {
   expect_equal(0,geometry$distance(geometry$scale(p,0.3,0.5,0.7),c(0.3,0.5,0.7)))
 })
 
+test_that("cross product", {
+  p <- c(1,0,0)
+  q <- c(0,1,0)
+  expect_equal(0,geometry$distance(geometry$cross_product(p,q),c(0,0,1)))
+})
+
+test_that("cross product zero", {
+  p <- c(0,0,0)
+  q <- c(1,1,1)
+  expect_equal(0,geometry$distance(geometry$cross_product(p,q),c(0,0,0)))
+})
+
+test_that("cross product same", {
+  p <- c(1,0,0)
+  q <- c(1,0,0)
+  expect_equal(0,geometry$distance(geometry$cross_product(p,q),c(0,0,0)))
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

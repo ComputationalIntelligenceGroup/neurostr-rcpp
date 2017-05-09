@@ -132,6 +132,30 @@ test_that("inequality", {
   expect_false(geometry$equal(s,t))
 })
 
+test_that("segment segment distance parallel", {
+  p <- c(0,0,0)
+  q <- c(1,0,0)
+  r <- c(0,1,0)
+  s <- c(1,1,0)
+  expect_equal(1,geometry$segment_segment_distance(p,q,r,s))
+})
+
+test_that("segment segment distance crossing", {
+  p <- c(0,0,0)
+  q <- c(1,0,0)
+  r <- c(0.5,0.5,0)
+  s <- c(0.5,-0.5,0)
+  expect_equal(0,geometry$segment_segment_distance(p,q,r,s))
+})
+
+test_that("segment segment distance non parallel", {
+  p <- c(0,0,0)
+  q <- c(1,0,0)
+  r <- c(1,10.5,0)
+  s <- c(1,0.5,0)
+  expect_equal(0.5,geometry$segment_segment_distance(p,q,r,s))
+})
+
 test_that("intersecting boxes intersects", {
   box1 <- matrix(c(0,0,0,1,1,1),2,3, TRUE)
   box2 <- matrix(c(0.5,0.5,0.5,1.5,1.5,1.5),2,3, TRUE)

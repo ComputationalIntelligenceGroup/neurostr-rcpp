@@ -188,6 +188,7 @@ RCPP_MODULE(core_geometry){
   function( "norm", &neurostr::geometry::norm);
   function( "equal", &equal);
   function( "get_basis", &neurostr::geometry::get_basis);
+  function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);
   function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_box_intersection", &segment_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);

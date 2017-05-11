@@ -1,6 +1,7 @@
 #include <RcppCommon.h>
 
 // [[Rcpp::plugins("cpp14")]]
+// [[Rcpp::depends(BH)]]
 
 #include <neurostr/core/geometry.h>
 
@@ -30,6 +31,9 @@ template <> SEXP wrap(const neurostr::geometry::planar_point &p);
 
 #include <Rcpp.h>
 #include <iostream>
+#include <boost/variant/variant.hpp>
+#include <boost/variant/apply_visitor.hpp>
+#include <boost/variant/variant_fwd.hpp>
 
 namespace Rcpp {
 
@@ -173,6 +177,59 @@ bool equal(NumericVector& a, NumericVector& b){
   return neurostr::geometry::equal(::as<neurostr::geometry::point_type>(::wrap(a)), ::as<neurostr::geometry::point_type>(::wrap(b)));
 }
 
+/*
+typedef boost::variant<neurostr::geometry::point_type, neurostr::geometry::box_type, neurostr::geometry::segment_type, neurostr::geometry::planar_point> Geometry;
+
+Geometry convert(const SEXP &g){
+  if(::Rf_inherits(g, "point_type")){
+    neurostr::geometry::point_type p(::as<neurostr::geometry::point_type>(g));
+    return Geometry(p);
+  }
+  if(::Rf_inherits(g, "box_type")){
+    neurostr::geometry::box_type b(::as<neurostr::geometry::box_type>(g));
+    return Geometry(b);
+  }
+  if(::Rf_inherits(g, "segment_type")){
+    neurostr::geometry::segment_type s(::as<neurostr::geometry::segment_type>(g));
+    return Geometry(s);
+  }
+  if(::Rf_inherits(g, "planar_point")){
+    neurostr::geometry::planar_point p(::as<neurostr::geometry::planar_point>(g));
+    return Geometry(p);
+  }
+  throw std::runtime_error("unexpected");
+}
+
+struct myvisitor : boost::static_visitor<bool> {
+  
+  template<typename T, typename S>
+  bool operator()(T g1, S g2) const {
+    return neurostr::geometry::covered_by(g1,g2);
+  }
+
+};
+
+bool covered_by(SEXP g1, SEXP g2){
+  auto geo1 = convert(g1);
+  auto geo2 = convert(g2);
+  return boost::apply_visitor(myvisitor{}, geo1, geo2);
+}
+*/
+
+List segment_cross_plane(const NumericMatrix & s,
+                         const NumericVector & v,
+                         int p){
+  neurostr::geometry::segment_type s_s = ::as<neurostr::geometry::segment_type>(::wrap(s));
+  neurostr::geometry::point_type p_v = ::as<neurostr::geometry::point_type>(::wrap(v));
+  neurostr::geometry::point_type p_i;
+  switch(p){
+    case 0: return List::create(neurostr::geometry::segment_cross_plane<0>(s_s,p_v,p_i), p_i);
+    case 1: return List::create(neurostr::geometry::segment_cross_plane<1>(s_s,p_v,p_i), p_i);
+    case 2: return List::create(neurostr::geometry::segment_cross_plane<2>(s_s,p_v,p_i), p_i);
+    default: return NAN;
+  }
+}
+
 RCPP_MODULE(core_geometry){
   
   function( "get", &neurostr::geometry::get);
@@ -189,8 +246,11 @@ RCPP_MODULE(core_geometry){
   function( "equal", &equal);
   function( "get_basis", &neurostr::geometry::get_basis);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);
-  function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
+  //function( "align_vectors", &neurostr::geometry::align_vectors);
   function( "segment_box_intersection", &segment_box_intersection);
+  //function( "covered_by", &covered_by);
+  function( "segment_cross_plane", &segment_cross_plane);
+  function( "box_box_intersection", &neurostr::geometry::box_box_intersection);
   function( "segment_segment_distance", &neurostr::geometry::segment_segment_distance);
   
 }

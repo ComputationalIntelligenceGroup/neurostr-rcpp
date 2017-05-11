@@ -7,6 +7,6 @@ Author: Mario Juez
 Maintainer: Maroi Juez <mjuez@fi.upm.es>
 Description: R wrappers for using NeuroSTR C++ library.
 License: GPL (>= 3)
-Imports: methods, Rcpp (>= 0.12.10)
-LinkingTo: Rcpp
+Imports: methods, Rcpp (>= 0.12.10), BH
+LinkingTo: Rcpp, BH
 Suggests: testthat

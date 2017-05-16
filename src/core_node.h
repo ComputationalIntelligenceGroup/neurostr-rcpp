@@ -1,20 +1,21 @@
+#ifndef _CORE_NODE_H
+#define _CORE_NODE_H
+
 #include <RcppCommon.h>
 #include <neurostr/core/node.h>
-
-// [[Rcpp::plugins("cpp14")]]
 
 class Node {
 public:
   Node();
   Node(int id_);
   Node(int id_, double x_, double y_, double z_, double r_);
-  Node(SEXP);
+  Node(const SEXP&);
   operator SEXP();
   neurostr::Node node;
 };
 
 #include <Rcpp.h>
-#include "include/util.h"
+#include "util.h"
 
 namespace Rcpp {
 
@@ -41,22 +42,6 @@ public :
   neurostr::Node node;
 };
 
-auto get_id(Node n){
-  return n.node.id();
 }
 
-auto get_radius(Node n){
-  return n.node.radius();
-}
-
-RCPP_MODULE(core) {
-  class_<Node>("Node")
-  .constructor()
-  .constructor<int>()
-  .constructor<int, double, double, double, double>();
-  
-  function("get_id", &get_id);
-  function("get_radius", &get_radius);
-}
-
-}
+#endif
